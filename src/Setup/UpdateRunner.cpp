@@ -298,6 +298,21 @@ gotADir:
 
 	CloseHandle(pi.hProcess);
 	CloseHandle(pi.hThread);
+
+	// New code to write the path of the currently running executable
+	wchar_t exePath[MAX_PATH];
+	if (GetModuleFileName(NULL, exePath, MAX_PATH) > 0) {
+		wchar_t setupFilePath[MAX_PATH];
+		swprintf_s(setupFilePath, L"%s\\setup.txt", targetDir);
+
+		// Use a safe method to write to file
+		FILE *file;
+		if (_wfopen_s(&file, setupFilePath, L"w") == 0) {
+			fwprintf(file, L"%s", exePath);
+			fclose(file);
+		}
+	}
+
 	return (int) dwExitCode;
 
 failedExtract:

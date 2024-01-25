@@ -324,15 +324,6 @@ namespace Squirrel
                         File.Delete(notFinishedFilePath);
                     }, "Couldn't delete file: " + notFinishedFilePath);
 
-                    // Write the path of the current executable to setup.txt
-                
-                    this.Log().Info("Writing setup.txt to root app directory: {0}", rootAppDirectory);
-                    this.ErrorIfThrows(() => {
-                        var exePath = Assembly.GetEntryAssembly().Location;
-                        var setupFilePath = Path.Combine(rootAppDirectory, "setup.txt");
-                        File.WriteAllText(setupFilePath, exePath);
-                    }, "Couldn't write setup path to file");
-
                     return target.FullName;
                 });
             }
