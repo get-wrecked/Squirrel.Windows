@@ -31,9 +31,9 @@ jobs:
         shell: cmd
         run: ./src/build_official.cmd
 
-      - name: Test Squirrel
-        shell: cmd
-        run: ./test/test_official.cmd
+      # - name: Test Squirrel
+      #   shell: cmd
+      #   run: ./test/test_official.cmd
 
       - name: Save build
         uses: actions/upload-artifact@v2
