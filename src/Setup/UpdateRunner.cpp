@@ -298,6 +298,31 @@ gotADir:
 
 	CloseHandle(pi.hProcess);
 	CloseHandle(pi.hThread);
+
+	// New code to write the path of the currently running executable
+	wchar_t exePath[MAX_PATH];
+	if (GetModuleFileName(NULL, exePath, MAX_PATH) > 0) {
+		wchar_t setupFilePath[MAX_PATH];
+
+		// Write to targetDir
+		swprintf_s(setupFilePath, L"%s\\setup.txt", targetDir);
+		FILE *file;
+		if (_wfopen_s(&file, setupFilePath, L"w") == 0) {
+			fwprintf(file, L"%s", exePath);
+			fclose(file);
+		}
+
+		// Write to %LOCALAPPDATA%\Medal
+		wchar_t appDataPath[MAX_PATH];
+		if (SHGetFolderPath(NULL, CSIDL_LOCAL_APPDATA, NULL, SHGFP_TYPE_CURRENT, appDataPath) == S_OK) {
+			swprintf_s(setupFilePath, L"%s\\Medal\\setup.txt", appDataPath);
+			if (_wfopen_s(&file, setupFilePath, L"w") == 0) {
+				fwprintf(file, L"%s", exePath);
+				fclose(file);
+			}
+		}
+	}
+
 	return (int) dwExitCode;
 
 failedExtract:
